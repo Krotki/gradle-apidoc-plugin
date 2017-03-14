@@ -40,9 +40,9 @@ apidoc {
 
 | Param     | Default |
 | --------- | ------- |
-| inputDir  | `"$project.projectDir/src/main"` |
-| outputDir | `"$project.buildDir/resources/main/static/doc"` |
-| include   | `'".*\\\\.(clj&#124;cls&#124;coffee&#124;cpp&#124;cs&#124;dart&#124;erl&#124;exs?&#124;go&#124;groovy&#124;ino?&#124;java&#124;js&#124;jsx&#124;kt&#124;litcoffee&#124;lua&#124;p&#124;php?&#124;pl&#124;pm&#124;py&#124;rb&#124;scala&#124;ts&#124;vue)$"'` |
-| exclude   | `""` |
-| template  | `""` |
-| config    | `""` |
+| inputDir  | <code>"$project.projectDir/src/main"</code> |
+| outputDir | <code>"$project.buildDir/resources/main/static/doc"</code> |
+| include   | <code>'".*\\\\.(clj&#124;cls&#124;coffee&#124;cpp&#124;cs&#124;dart&#124;erl&#124;exs?&#124;go&#124;groovy&#124;ino?&#124;java&#124;js&#124;jsx&#124;kt&#124;litcoffee&#124;lua&#124;p&#124;php?&#124;pl&#124;pm&#124;py&#124;rb&#124;scala&#124;ts&#124;vue)$"'</code> |
+| exclude   | <code>""</code> |
+| template  | <code>""</code> |
+| config    | <code>""</code> |
