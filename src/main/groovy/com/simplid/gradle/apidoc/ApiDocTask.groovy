@@ -90,12 +90,20 @@ class ApiDocTask extends DefaultTask {
         logger.info "apidoc input dir: $inputDir"
         logger.info "apidoc output dir: $outputDir"
 
+        String apiDocExec = "apidoc"
+        if (IS_WINDOWS) {
+            apiDocExec += ".cmd"
+        }
+
+        File localApiDocExec = project.file("node_modules/apidoc/bin/$apiDocExec")
+        if (localApiDocExec.exists() && localApiDocExec.isFile() && localApiDocExec.canExecute()) {
+            apiDocExec = localApiDocExec.getAbsolutePath()
+        }
+
+        logger.info("apidoc executable: $apiDocExec")
+
         project.exec {
-            if (IS_WINDOWS) {
-                executable('apidoc.cmd')
-            } else {
-                executable('apidoc')
-            }
+            executable(apiDocExec)
 
             args('-i', inputDir)
             args('-o', outputDir)
