@@ -9,40 +9,40 @@ compiled application.
 Requirements
 ------------
 
-**_This plugin assumes that you have apidoc installed on your system!_**
-
-
-Please install [nodejs](https://nodejs.org/en/download/) and [apidocjs](http://apidocjs.com/):
-
-`npm install apidoc -g`
-
-> **HINT:** you may need `sudo`
+* [nodejs](https://nodejs.org/en/download/)
+* [apidocjs](http://apidocjs.com/)
+    * global installation 
+        * `npm install apidoc -g` (you may need `sudo`)
+    * local installation
+        * in your project folder type `npm install apidoc` (this will create *node_modules* folder with all dependencies)
 
 Configuration
 -------------
 
 ```groovy
 plugins {
-    id "com.simplid.gradle.apidoc" version "0.0.1"
+    id "com.simplid.gradle.apidoc" version "0.0.2"
 }
  
 apidoc {
     inputDir "src/main/java/some/package/controllers"
-    outputDir "doc"
+    outputDir "$project.buildDir/resources/main/doc"
     include ".groovy", ".java"
     include ".kt"
     exclude ".scala"
     exclude ".js"
     template "/path/to/template"
-    config "config/apidoc.json"
+    configDir "custom/config"
+    generateConfig = false
 }
 ```
 
-| Param     | Default |
-| --------- | ------- |
-| inputDir  | "$project.projectDir/src/main" |
-| outputDir | "$project.buildDir/resources/main/static/doc" |
-| include   | '".*\\\\.(clj\|cls\|coffee\|cpp\|cs\|dart\|erl\|exs?\|go\|groovy\|ino?\|java\|js\|jsx\|kt\|litcoffee\|lua\|p\|php?\|pl\|pm\|py\|rb\|scala\|ts\|vue)$"' |
-| exclude   | "" |
-| template  | "" |
-| config    | "" |
+Param          | Default
+-------------- | -------
+inputDir       | "$project.projectDir/src/main"
+outputDir      | "$project.buildDir/resources/main/static/doc"
+include        | '".*\\\\.(clj\|cls\|coffee\|cpp\|cs\|dart\|erl\|exs?\|go\|groovy\|ino?\|java\|js\|jsx\|kt\|litcoffee\|lua\|p\|php?\|pl\|pm\|py\|rb\|scala\|ts\|vue)$"'
+exclude        | ""
+configDir      | ""
+template       | ""
+generateConfig | true
