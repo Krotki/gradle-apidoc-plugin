@@ -15,11 +15,25 @@ class ApiDocPlugin implements Plugin<Project> {
         addTaskDependencies(project)
 
         project.afterEvaluate {
+
+            project.task('apidocGenConfig',
+                    type: ApiDocConfigTask,
+                    group: 'documentation',
+                    description: 'Generates apidoc\'s minimal configuration file from project variables'
+            ) { task ->
+
+                if (apiDocExtension.configDir) {
+                    task.configDir = apiDocExtension.configDir
+                }
+            }
+
             project.task('apidoc',
                     type: ApiDocTask,
                     group: 'documentation',
                     description: 'Generates the REST API documentation with ApiDocJS (requires apidoc to be installed)'
             ) { task ->
+
+                logger.info "apidoc extension props: ${["inputDir": apiDocExtension.inputDir, "outputDir": apiDocExtension.outputDir, "config": apiDocExtension.configDir, "template": apiDocExtension.template, "include": apiDocExtension.include, "exclude": apiDocExtension.exclude]}"
 
                 if (apiDocExtension.inputDir) {
                     task.inputDir = apiDocExtension.inputDir
@@ -37,12 +51,20 @@ class ApiDocPlugin implements Plugin<Project> {
                     task.exclude = apiDocExtension.exclude
                 }
 
-                if (apiDocExtension.config) {
-                    task.config = apiDocExtension.config
+                if (apiDocExtension.configDir) {
+                    task.configDir = apiDocExtension.configDir
+                }
+
+                if (apiDocExtension.generateConfig && !apiDocExtension.configDir) {
+                    task.configDir = new File("$project.buildDir/apidoc/")
                 }
 
                 if (apiDocExtension.template) {
                     task.template = apiDocExtension.template
+                }
+
+                if (apiDocExtension.generateConfig) {
+                    task.dependsOn('apidocGenConfig')
                 }
             }
         }

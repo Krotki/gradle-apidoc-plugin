@@ -9,12 +9,14 @@ class ApiDocTask extends DefaultTask {
     private static
     final boolean IS_WINDOWS = System.getProperty('os.name').toLowerCase().contains('windows')
 
+    final static String DEFAULT_CONFIG_FILE = "apidoc.json"
+
     private Object inputDir = "$project.projectDir/src/main"
     private Object outputDir = "$project.buildDir/resources/main/static/doc"
     private List<Object> include = ['".*\\\\.(clj|cls|coffee|cpp|cs|dart|erl|exs?|go|groovy|ino?|java|js|jsx|kt|litcoffee|lua|p|php?|pl|pm|py|rb|scala|ts|vue)$"']
     private List<Object> exclude = []
-    private Object template = null
-    private Object config = null
+    private Object template = ""
+    private Object configDir = ""
 
     @InputDirectory
     File getInputDir() {
@@ -75,20 +77,26 @@ class ApiDocTask extends DefaultTask {
     }
 
     @Optional
-    @Input
-    String getConfig() {
-        return config
+    @InputFile
+    File getConfigFile() {
+        if (configDir) {
+            return project.file(configDir.toString() + "/" + DEFAULT_CONFIG_FILE)
+        }
+        return null
     }
 
-    void setConfig(Object config) {
-        this.config = config
+    String getConfigDir() {
+        return configDir
+    }
+
+    void setConfigDir(Object config) {
+        this.configDir = config
     }
 
     @TaskAction
     void generateDocumentation() {
 
-        logger.info "apidoc input dir: $inputDir"
-        logger.info "apidoc output dir: $outputDir"
+        logger.info "apidoc properties: ${["inputDir": inputDir, "outputDir": outputDir, "configDir": configDir, "template": template, "include": include, "exclude": exclude]}"
 
         String apiDocExec = "apidoc"
         if (IS_WINDOWS) {
@@ -107,8 +115,8 @@ class ApiDocTask extends DefaultTask {
 
             args('-i', inputDir)
             args('-o', outputDir)
-            if (config) {
-                args('-c', config)
+            if (configDir) {
+                args('-c', configDir)
             }
             if (template) {
                 args('-t', template)
