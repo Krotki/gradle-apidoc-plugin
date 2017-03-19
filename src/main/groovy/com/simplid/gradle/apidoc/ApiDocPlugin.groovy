@@ -33,7 +33,11 @@ class ApiDocPlugin implements Plugin<Project> {
                     description: 'Generates the REST API documentation with ApiDocJS (requires apidoc to be installed)'
             ) { task ->
 
-                logger.info "apidoc extension props: ${["inputDir": apiDocExtension.inputDir, "outputDir": apiDocExtension.outputDir, "config": apiDocExtension.configDir, "template": apiDocExtension.template, "include": apiDocExtension.include, "exclude": apiDocExtension.exclude]}"
+                logger.info "apidoc extension props: ${["exec": apiDocExtension.exec, "inputDir": apiDocExtension.inputDir, "outputDir": apiDocExtension.outputDir, "config": apiDocExtension.configDir, "template": apiDocExtension.template, "include": apiDocExtension.include, "exclude": apiDocExtension.exclude]}"
+
+                if (apiDocExtension.exec) {
+                    task.exec = apiDocExtension.exec
+                }
 
                 if (apiDocExtension.inputDir) {
                     task.inputDir = apiDocExtension.inputDir

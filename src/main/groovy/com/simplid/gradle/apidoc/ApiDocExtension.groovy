@@ -2,6 +2,7 @@ package com.simplid.gradle.apidoc
 
 class ApiDocExtension {
 
+    Object exec = null
     Object inputDir = null
     Object outputDir = null
     List<Object> include = []
