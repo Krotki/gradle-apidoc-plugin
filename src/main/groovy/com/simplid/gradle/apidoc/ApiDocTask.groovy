@@ -19,6 +19,7 @@ class ApiDocTask extends DefaultTask {
     private Object configDir = ""
     private Object exec = ""
 
+    @Input
     Object getExec() {
         return exec
     }
