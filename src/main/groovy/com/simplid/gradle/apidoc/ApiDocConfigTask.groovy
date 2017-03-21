@@ -18,10 +18,10 @@ class ApiDocConfigTask extends DefaultTask {
 
     @OutputFile
     File getConfigFile() {
-        return project.file(configDir + "/" + ApiDocTask.DEFAULT_CONFIG_FILE)
+        return project.file(configDir ? new File(configDir, ApiDocTask.DEFAULT_CONFIG_FILE) : ApiDocTask.DEFAULT_CONFIG_FILE)
     }
 
-    String configDir = "$project.buildDir/apidoc"
+    String configDir = ""
 
     @TaskAction
     void generateApiDocConfig() {

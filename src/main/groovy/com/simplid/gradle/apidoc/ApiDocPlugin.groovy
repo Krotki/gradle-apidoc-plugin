@@ -25,12 +25,16 @@ class ApiDocPlugin implements Plugin<Project> {
                 if (apiDocExtension.configDir) {
                     task.configDir = apiDocExtension.configDir
                 }
+
+                if (apiDocExtension.generateConfig && !apiDocExtension.configDir) {
+                    task.configDir = new File("$project.buildDir/apidoc/")
+                }
             }
 
             project.task('apidoc',
                     type: ApiDocTask,
                     group: 'documentation',
-                    description: 'Generates the REST API documentation with ApiDocJS (requires apidoc to be installed)'
+                    description: 'Generates the REST API documentation with ApiDocJS'
             ) { task ->
 
                 logger.info "apidoc extension props: ${["exec": apiDocExtension.exec, "inputDir": apiDocExtension.inputDir, "outputDir": apiDocExtension.outputDir, "config": apiDocExtension.configDir, "template": apiDocExtension.template, "include": apiDocExtension.include, "exclude": apiDocExtension.exclude]}"

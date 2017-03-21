@@ -90,7 +90,7 @@ class ApiDocTask extends DefaultTask {
     @InputFile
     File getConfigFile() {
         if (configDir) {
-            return project.file(configDir.toString() + "/" + DEFAULT_CONFIG_FILE)
+            return project.file(new File(configDir.toString(), DEFAULT_CONFIG_FILE))
         }
         return null
     }
