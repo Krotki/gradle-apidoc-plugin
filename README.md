@@ -42,7 +42,7 @@ apidoc {
 | --------- | ------- |
 | inputDir  | "$project.projectDir/src/main" |
 | outputDir | "$project.buildDir/resources/main/static/doc" |
-| include   | '".*\\\\.(clj\|cls\|coffee\|cpp\|cs\|dart\|erl\|exs?\|go\|groovy\|ino?\|java\|js\|jsx\|kt\|litcoffee\|lua\|p\|php?\|pl\|pm\|py\|rb\|scala\|ts\|vue)$"' |
+| include   | "" |
 | exclude   | "" |
 | template  | "" |
 | config    | "" |
