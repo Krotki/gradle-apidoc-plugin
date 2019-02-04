@@ -33,7 +33,7 @@ If you agree with defaults, you can omit whole `apidoc` section.
 
 ```groovy
 plugins {
-    id "com.simplid.gradle.apidoc" version "0.0.2"
+    id "com.simplid.gradle.apidoc" version "0.0.3"
 }
  
 apidoc {
@@ -71,7 +71,9 @@ point to folder that directly contains annotated files f.i. controllers or resou
 Where to generate output.
 
 #### include
-> default: `[".*\\\\.(clj|cls|coffee|cpp|cs|dart|erl|exs?|go|groovy|ino?|java|js|jsx|kt|litcoffee|lua|p|php?|pl|pm|py|rb|scala|ts|vue)$"]`
+> default: `[]`
+
+> example: `[".*\\\\.(clj|cls|coffee|cpp|cs|dart|erl|exs?|go|groovy|ino?|java|js|jsx|kt|litcoffee|lua|p|php?|pl|pm|py|rb|scala|ts|vue)$"]`
 
 RegEx filter to select files that should be parsed. Multiple includes can be used.
 

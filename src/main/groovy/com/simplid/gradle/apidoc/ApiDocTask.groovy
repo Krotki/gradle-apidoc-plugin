@@ -13,7 +13,7 @@ class ApiDocTask extends DefaultTask {
 
     private Object inputDir = "$project.projectDir/src/main"
     private Object outputDir = "$project.buildDir/resources/main/static/doc"
-    private List<Object> include = ['".*\\\\.(clj|cls|coffee|cpp|cs|dart|erl|exs?|go|groovy|ino?|java|js|jsx|kt|litcoffee|lua|p|php?|pl|pm|py|rb|scala|ts|vue)$"']
+    private List<Object> include = []
     private List<Object> exclude = []
     private Object template = ""
     private Object configDir = ""
@@ -125,10 +125,10 @@ class ApiDocTask extends DefaultTask {
         project.exec {
             executable(exec)
 
-            args('-i', inputDir)
-            args('-o', outputDir)
+            args('-i', "'$inputDir'")
+            args('-o', "'$outputDir'")
             if (configDir) {
-                args('-c', configDir)
+                args('-c', "'$configDir'")
             }
             if (template) {
                 args('-t', template)
