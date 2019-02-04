@@ -17,6 +17,16 @@ class ApiDocTask extends DefaultTask {
     private List<Object> exclude = []
     private Object template = ""
     private Object configDir = ""
+    private Object exec = ""
+
+    @Input
+    Object getExec() {
+        return exec
+    }
+
+    void setExec(Object exec) {
+        this.exec = exec
+    }
 
     @InputDirectory
     File getInputDir() {
@@ -80,7 +90,7 @@ class ApiDocTask extends DefaultTask {
     @InputFile
     File getConfigFile() {
         if (configDir) {
-            return project.file(configDir.toString() + "/" + DEFAULT_CONFIG_FILE)
+            return project.file(new File(configDir.toString(), DEFAULT_CONFIG_FILE))
         }
         return null
     }
@@ -96,22 +106,24 @@ class ApiDocTask extends DefaultTask {
     @TaskAction
     void generateDocumentation() {
 
-        logger.info "apidoc properties: ${["inputDir": inputDir, "outputDir": outputDir, "configDir": configDir, "template": template, "include": include, "exclude": exclude]}"
+        logger.info "apidoc properties: ${["exec": exec, "inputDir": inputDir, "outputDir": outputDir, "configDir": configDir, "template": template, "include": include, "exclude": exclude]}"
 
-        String apiDocExec = "apidoc"
-        if (IS_WINDOWS) {
-            apiDocExec += ".cmd"
+        if (!exec) {
+            exec = "apidoc"
+            if (IS_WINDOWS) {
+                exec += ".cmd"
+            }
+
+            File localApiDocExec = project.file("node_modules/apidoc/bin/$exec")
+            if (localApiDocExec.exists() && localApiDocExec.isFile() && localApiDocExec.canExecute()) {
+                exec = localApiDocExec.getAbsolutePath()
+            }
         }
 
-        File localApiDocExec = project.file("node_modules/apidoc/bin/$apiDocExec")
-        if (localApiDocExec.exists() && localApiDocExec.isFile() && localApiDocExec.canExecute()) {
-            apiDocExec = localApiDocExec.getAbsolutePath()
-        }
-
-        logger.info("apidoc executable: $apiDocExec")
+        logger.info("apidoc executable: $exec")
 
         project.exec {
-            executable(apiDocExec)
+            executable(exec)
 
             args('-i', "'$inputDir'")
             args('-o', "'$outputDir'")
