@@ -33,7 +33,7 @@ If you agree with defaults, you can omit whole `apidoc` section.
 
 ```groovy
 plugins {
-    id "com.simplid.gradle.apidoc" version "0.0.3"
+    id "com.simplid.gradle.apidoc" version "0.1.0"
 }
  
 apidoc {
@@ -45,8 +45,7 @@ apidoc {
     exclude ".scala"
     exclude ".js"
     template "/path/to/template"
-    configDir "custom/config"
-    generateConfig false
+    configFile "custom/config/apidoc.json"
 }
 ```
 
@@ -82,18 +81,12 @@ RegEx filter to select files that should be parsed. Multiple includes can be use
 
 RegEx filter to select files/dirs that should not be parsed. Multiple excludes can be used.
 
-#### configDir
-> default: `""` or `"$project.buildDir/apidoc"` if **generateConfig** flag is set
+#### configFile
+> default: `"$project.buildDir/apidoc/apidoc.json"`
 
-Path to directory containing config file `apidoc.json`. This setting is used by both tasks. 
+Path to config file **OR** to directory containing config file `apidoc.json`. This setting is used by both tasks. 
 
 #### template
 > default: `""`
 
 Path to directory containing apidoc template.
-
-#### generateConfig
-> default: `true`
-
-When this flag is set, task **apidoc** will depend on **apidocGenConfig**. To use tasks 
-independently, set it to `false`.

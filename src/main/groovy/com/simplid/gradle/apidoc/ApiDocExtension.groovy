@@ -8,8 +8,7 @@ class ApiDocExtension {
     List<Object> include = []
     List<Object> exclude = []
     Object template = null
-    Object configDir = null
-    boolean generateConfig = true
+    Object configFile = null
 
     void include(Object... include) {
         this.include.addAll(include)

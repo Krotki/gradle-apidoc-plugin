@@ -22,12 +22,8 @@ class ApiDocPlugin implements Plugin<Project> {
                     description: 'Generates apidoc\'s minimal configuration file from project variables'
             ) { task ->
 
-                if (apiDocExtension.configDir) {
-                    task.configDir = apiDocExtension.configDir
-                }
-
-                if (apiDocExtension.generateConfig && !apiDocExtension.configDir) {
-                    task.configDir = new File("$project.buildDir/apidoc/")
+                if (apiDocExtension.configFile) {
+                    task.configFile = apiDocExtension.configFile
                 }
             }
 
@@ -37,7 +33,7 @@ class ApiDocPlugin implements Plugin<Project> {
                     description: 'Generates the REST API documentation with ApiDocJS'
             ) { task ->
 
-                logger.info "apidoc extension props: ${["exec": apiDocExtension.exec, "inputDir": apiDocExtension.inputDir, "outputDir": apiDocExtension.outputDir, "config": apiDocExtension.configDir, "template": apiDocExtension.template, "include": apiDocExtension.include, "exclude": apiDocExtension.exclude]}"
+                logger.info "apidoc extension props: ${["exec": apiDocExtension.exec, "inputDir": apiDocExtension.inputDir, "outputDir": apiDocExtension.outputDir, "config": apiDocExtension.configFile, "template": apiDocExtension.template, "include": apiDocExtension.include, "exclude": apiDocExtension.exclude]}"
 
                 if (apiDocExtension.exec) {
                     task.exec = apiDocExtension.exec
@@ -59,20 +55,16 @@ class ApiDocPlugin implements Plugin<Project> {
                     task.exclude = apiDocExtension.exclude
                 }
 
-                if (apiDocExtension.configDir) {
-                    task.configDir = apiDocExtension.configDir
-                }
-
-                if (apiDocExtension.generateConfig && !apiDocExtension.configDir) {
-                    task.configDir = new File("$project.buildDir/apidoc/")
+                if (apiDocExtension.configFile) {
+                    task.configFile = apiDocExtension.configFile
+                } else {
+                    def apidocGenConfigTask = project.getTasksByName('apidocGenConfig', false).first() as ApiDocConfigTask
+                    task.dependsOn(apidocGenConfigTask)
+                    task.configFile = apidocGenConfigTask.getConfigFile()
                 }
 
                 if (apiDocExtension.template) {
                     task.template = apiDocExtension.template
-                }
-
-                if (apiDocExtension.generateConfig) {
-                    task.dependsOn('apidocGenConfig')
                 }
             }
         }

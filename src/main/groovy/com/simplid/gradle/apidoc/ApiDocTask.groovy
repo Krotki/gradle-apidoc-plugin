@@ -1,22 +1,21 @@
 package com.simplid.gradle.apidoc
 
+import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
+import org.gradle.process.ExecSpec
 import org.gradle.util.CollectionUtils
 
 class ApiDocTask extends DefaultTask {
 
-    private static
-    final boolean IS_WINDOWS = System.getProperty('os.name').toLowerCase().contains('windows')
-
-    final static String DEFAULT_CONFIG_FILE = "apidoc.json"
+    private static final boolean IS_WINDOWS = System.getProperty('os.name').toLowerCase().contains('windows')
 
     private Object inputDir = "$project.projectDir/src/main"
     private Object outputDir = "$project.buildDir/resources/main/static/doc"
     private List<Object> include = []
     private List<Object> exclude = []
     private Object template = ""
-    private Object configDir = ""
+    private Object configFile = ""
     private Object exec = ""
 
     @Input
@@ -86,27 +85,19 @@ class ApiDocTask extends DefaultTask {
         this.template = template
     }
 
-    @Optional
     @InputFile
     File getConfigFile() {
-        if (configDir) {
-            return project.file(new File(configDir.toString(), DEFAULT_CONFIG_FILE))
-        }
-        return null
+        return configFile
     }
 
-    String getConfigDir() {
-        return configDir
-    }
-
-    void setConfigDir(Object config) {
-        this.configDir = config
+    void setConfigFile(Object configFile) {
+        this.configFile = configFile
     }
 
     @TaskAction
     void generateDocumentation() {
 
-        logger.info "apidoc properties: ${["exec": exec, "inputDir": inputDir, "outputDir": outputDir, "configDir": configDir, "template": template, "include": include, "exclude": exclude]}"
+        logger.info "apidoc properties: ${["exec": exec, "inputDir": inputDir, "outputDir": outputDir, "configFile": configFile, "template": template, "include": include, "exclude": exclude]}"
 
         if (!exec) {
             exec = "apidoc"
@@ -122,23 +113,23 @@ class ApiDocTask extends DefaultTask {
 
         logger.info("apidoc executable: $exec")
 
-        project.exec {
-            executable(exec)
+        project.exec({ execSpec ->
+            execSpec.executable(exec)
 
-            args('-i', "'$inputDir'")
-            args('-o', "'$outputDir'")
-            if (configDir) {
-                args('-c', "'$configDir'")
+            execSpec.args('-i', inputDir)
+            execSpec.args('-o', outputDir)
+            if (configFile) {
+                execSpec.args('-c', configFile)
             }
             if (template) {
-                args('-t', template)
+                execSpec.args('-t', template)
             }
             include.each {
-                args('-f', it)
+                execSpec.args('-f', it)
             }
             exclude.each {
-                args('-e', it)
+                execSpec.args('-e', it)
             }
-        }
+        } as Action<? super ExecSpec>)
     }
 }

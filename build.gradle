@@ -1,6 +1,7 @@
 plugins {
     id 'groovy'
-    id 'com.gradle.plugin-publish' version '0.10.1'
+    id 'com.gradle.plugin-publish' version '0.17.0'
+    id 'maven-publish'
 }
 
 targetCompatibility = 1.6
@@ -11,7 +12,7 @@ dependencies {
     compile localGroovy()
 }
 
-version = "0.0.3"
+version = "0.1.0"
 group = "com.simplid.gradle.apidoc"
 
 pluginBundle {
@@ -28,6 +29,17 @@ pluginBundle {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.6'
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.simplid.gradle.apidoc'
+            artifactId = 'com.simplid.gradle.apidoc.gradle.plugin'
+
+            from components.java
+        }
+    }
+}
+
+wrapper {
+    gradleVersion = '4.8'
 }
